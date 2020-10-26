@@ -44,7 +44,7 @@ const update = async () => {
         }
       })
     ) {
-      player.undoMove();
+      player.moveBack();
     }
 
     const { currentHealth } = player.health;
