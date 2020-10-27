@@ -48,7 +48,7 @@ const update = async () => {
     // TODO: this is quadratic behaviour (and will scale poorly), but might not have enough
     // objects/comparisons to warrant a more efficient structure
     // e.g quadtree, octotree.
-    if (player.collidesWithAny(...obstacles)) {
+    if (player.extendsBeyond(world) || player.collidesWithAny(...obstacles)) {
       player.moveBack();
     }
 
@@ -74,9 +74,21 @@ const update = async () => {
     // Update
     for (const shot of player.shooter.shotsFired) {
       shot.move();
-      // Check if collides with obstacles?
-      if (obstacles.some((obstacle) => shot.collidesWith(obstacle)))
-        ctx.fillStyle = "goldenrod";
+
+      if (
+        // Check if shot has left the world/scope of view
+        shot.extendsBeyond(world) ||
+        // Check if shot collides with obstacles?
+        shot.collidesWithAny(...obstacles) ||
+        // TODO: Need a convenience method here
+        // Check if shot collides with player?
+        shot.collidesWithAny(...players.filter((p) => p !== player))
+      ) {
+        // console.log("shot collided with", shot);
+        player.shooter.remove(shot);
+      }
+
+      ctx.fillStyle = "goldenrod";
       ctx.fillRect(shot.x, shot.y, 7, 7);
     }
   }
