@@ -24,7 +24,7 @@ export class Shape {
     );
   }
 
-  collidesWithAny(...otherShapes: Shape[]) {
+  collidesWithAny(...otherShapes: Shape[]): boolean {
     return otherShapes.some((otherShape) => this.collidesWith(otherShape));
   }
 
@@ -35,6 +35,10 @@ export class Shape {
       this.topLeft.y < otherShape.topLeft.y ||
       this.bottomRight.y > otherShape.bottomRight.y
     );
+  }
+
+  getAllCollisionsWith<T extends Shape>(...otherShapes: T[]): T[] {
+    return otherShapes.filter((otherShape) => this.collidesWith(otherShape));
   }
 
   get topLeft(): IPosition {

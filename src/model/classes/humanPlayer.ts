@@ -2,8 +2,9 @@ import { Controls } from "../components/controls";
 import { Health } from "../components/health";
 import { MovableShape } from "../components/movableShape";
 import { Shooter } from "../components/shooter";
+import { Player } from "../interfaces/player";
 
-export class HumanPlayer extends MovableShape {
+export class HumanPlayer extends MovableShape implements Player {
   constructor(
     x: number,
     y: number,

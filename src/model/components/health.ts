@@ -1,18 +1,27 @@
 export class Health {
   constructor(
-    public maxHealth: number,
-    public currentHealth: number = maxHealth
+    private maxHealth: number,
+    private currentHealth: number = maxHealth
   ) {}
 
   changeHealthBy(change: number) {
-    this.currentHealth += change;
+    this.currentHealth = Math.max(0, this.currentHealth + change);
   }
 
-  get isDead() {
+  get isEmpty() {
     return this.currentHealth === 0;
   }
 
-  get currentHealthAsPercentage() {
+  get currentPercentage() {
     return this.currentHealth / this.maxHealth;
+  }
+
+  get currentColour() {
+    if (this.currentPercentage > 0.6) {
+      return "green";
+    } else if (this.currentPercentage > 0.4) {
+      return "yellow";
+    }
+    return "red";
   }
 }

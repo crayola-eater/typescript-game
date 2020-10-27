@@ -1,8 +1,10 @@
 import { Health } from "../components/health";
 import { MovableShape } from "../components/movableShape";
 import { Shooter } from "../components/shooter";
+import { Player } from "../interfaces/player";
+import { IPosition } from "../interfaces/position";
 
-export class ComputerPlayer extends MovableShape {
+export class ComputerPlayer extends MovableShape implements Player {
   #lastActions: {
     changedDeltaX: number;
     changedDeltaY: number;
@@ -31,6 +33,10 @@ export class ComputerPlayer extends MovableShape {
     return new Date().getTime() > this.#lastActions.changedDeltaX + 100;
   }
 
+  get shouldShoot() {
+    return new Date().getTime() > this.#lastActions.shot + 2000;
+  }
+
   maybeChangeDirection() {
     if (this.shouldChangeDirection) {
       const leftOrRight = Math.random() < 0.5 ? -1 : 1;
@@ -48,6 +54,21 @@ export class ComputerPlayer extends MovableShape {
   move() {
     this.maybeChangeDirection();
     super.move();
+  }
+
+  shoot(at: IPosition) {
+    if (this.shouldShoot) {
+      this.shooter.shoot(
+        {
+          x: this.center.x,
+          y: this.center.y,
+        },
+        {
+          x: at.x,
+          y: at.y,
+        }
+      );
+    }
   }
 }
 
