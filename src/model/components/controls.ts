@@ -24,8 +24,10 @@ export class Controls {
     this.#onInput = (input, newValue) => console.log({ input, newValue });
 
     const clickListener = (e: MouseEvent) => {
-      this.inputs.LMB = e.type === "mousedown";
-      this.#onInput("LMB", this.inputs.LMB, e);
+      if (0 === e.button) {
+        this.inputs.LMB = e.type === "mousedown";
+        this.#onInput("LMB", this.inputs.LMB, e);
+      }
     };
 
     const keyListener = (e: KeyboardEvent) => {

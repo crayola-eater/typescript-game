@@ -24,6 +24,10 @@ export class Shape {
     );
   }
 
+  collidesWithAny(...otherShapes: Shape[]) {
+    return otherShapes.some((otherShape) => this.collidesWith(otherShape));
+  }
+
   extendsBeyond(otherShape: Shape): boolean {
     return (
       this.topLeft.x < otherShape.topLeft.x ||

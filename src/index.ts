@@ -10,6 +10,14 @@ const ctx = canvas.getContext("2d")!;
 canvas.height = world.height;
 canvas.width = world.width;
 
+/**
+ * TODO: Put "draw"/"render" method on "Shape" class
+ * and have all subclasses (Shot, MovableShape, HumanPlayer,
+ * ComputerPlayer) override with their implementation
+ * (depending on how they want to be rendered on the canvas).
+ * Then the caller can just call "draw" method and the classes
+ * themselves can be responsible for how they're represented.
+ */
 const update = async () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -36,14 +44,11 @@ const update = async () => {
 
   for (const player of players) {
     player.move();
-    if (
-      obstacles.some((obstacle) => {
-        if (obstacle.collidesWith(player)) {
-          console.log("Collision between player and obstacle.");
-          return true;
-        }
-      })
-    ) {
+
+    // TODO: this is quadratic behaviour (and will scale poorly), but might not have enough
+    // objects/comparisons to warrant a more efficient structure
+    // e.g quadtree, octotree.
+    if (player.collidesWithAny(...obstacles)) {
       player.moveBack();
     }
 
@@ -66,9 +71,12 @@ const update = async () => {
     ctx.lineWidth = 2;
     ctx.strokeRect(player.x, player.y - 40, player.width, 20);
 
+    // Update
     for (const shot of player.shooter.shotsFired) {
       shot.move();
-      ctx.fillStyle = "goldenrod";
+      // Check if collides with obstacles?
+      if (obstacles.some((obstacle) => shot.collidesWith(obstacle)))
+        ctx.fillStyle = "goldenrod";
       ctx.fillRect(shot.x, shot.y, 7, 7);
     }
   }
