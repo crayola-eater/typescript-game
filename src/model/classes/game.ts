@@ -15,12 +15,6 @@ export class Game {
     this.canvas.height = this.world.height;
     this.canvas.width = this.world.width;
     this.#ctx = this.canvas.getContext("2d")!;
-    console.log(players);
-    console.log(
-      players
-        .map((p, i) => ({ i, b: p.extendsBeyond(this.world) }))
-        .filter((o) => o.b)
-    );
   }
 
   get computerPlayers(): ComputerPlayer[] {
