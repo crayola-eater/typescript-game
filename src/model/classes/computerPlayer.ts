@@ -1,6 +1,7 @@
 import { Health } from "../components/health";
 import { Player } from "../components/player";
 import { Shooter } from "../components/shooter";
+import { PlayerDetails } from "../interfaces/playerDetails";
 import { IPosition } from "../interfaces/position";
 
 export class ComputerPlayer extends Player {
@@ -11,6 +12,7 @@ export class ComputerPlayer extends Player {
   };
 
   constructor(
+    public details: PlayerDetails,
     x: number,
     y: number,
     public health: Health,
@@ -18,7 +20,7 @@ export class ComputerPlayer extends Player {
     width: number = 100,
     height: number = 100
   ) {
-    super(x, y, health, shooter, width, height);
+    super(details, x, y, health, shooter, width, height);
 
     const currentTime = new Date().getTime();
     this.#lastActions = {
@@ -33,7 +35,7 @@ export class ComputerPlayer extends Player {
   }
 
   get shouldShoot() {
-    return new Date().getTime() > this.#lastActions.shot + 2000;
+    return new Date().getTime() > this.#lastActions.shot + 500;
   }
 
   maybeChangeDirection() {
@@ -57,15 +59,8 @@ export class ComputerPlayer extends Player {
 
   shoot(at: IPosition) {
     if (this.shouldShoot) {
+      this.#lastActions.shot = new Date().getTime();
       super.shoot(at);
     }
   }
 }
-
-function createDefaultComputerPlayer() {
-  const health = new Health(100);
-  const shooter = new Shooter();
-  return new ComputerPlayer(600, 200, health, shooter);
-}
-
-export const defaultComputerPlayer = createDefaultComputerPlayer();

@@ -2,9 +2,11 @@ import { Controls } from "../components/controls";
 import { Health } from "../components/health";
 import { Player } from "../components/player";
 import { Shooter } from "../components/shooter";
+import { PlayerDetails } from "../interfaces/playerDetails";
 
 export class HumanPlayer extends Player {
   constructor(
+    public details: PlayerDetails,
     x: number,
     y: number,
     public health: Health,
@@ -15,7 +17,7 @@ export class HumanPlayer extends Player {
     deltaX: number = 0,
     deltaY: number = 0
   ) {
-    super(x, y, health, shooter, width, height, deltaX, deltaY);
+    super(details, x, y, health, shooter, width, height, deltaX, deltaY);
     this.controls.onInputHandler = (input, newState, event) => {
       if ("LMB" === input && newState) {
         super.shoot({
@@ -46,12 +48,3 @@ export class HumanPlayer extends Player {
     super.move();
   }
 }
-
-function createDefaultHumanPlayer() {
-  const health = new Health(100);
-  const controls = new Controls(document.querySelector("canvas")!, window);
-  const shooter = new Shooter();
-  return new HumanPlayer(300, 100, health, controls, shooter);
-}
-
-export const defaultHumanPlayer = createDefaultHumanPlayer();

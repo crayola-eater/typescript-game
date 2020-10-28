@@ -1,10 +1,10 @@
 import { Player } from "../components/player";
+import { ComputerPlayer } from "./computerPlayer";
 import { Obstacle } from "./obstacle";
 import { World } from "./world";
 
 export class Game {
   #ctx: CanvasRenderingContext2D;
-  #isRunning: boolean;
 
   constructor(
     private world: World,
@@ -15,7 +15,18 @@ export class Game {
     this.canvas.height = this.world.height;
     this.canvas.width = this.world.width;
     this.#ctx = this.canvas.getContext("2d")!;
-    this.#isRunning = false;
+    console.log(players);
+    console.log(
+      players
+        .map((p, i) => ({ i, b: p.extendsBeyond(this.world) }))
+        .filter((o) => o.b)
+    );
+  }
+
+  get computerPlayers(): ComputerPlayer[] {
+    return this.players.filter(
+      (player) => player instanceof ComputerPlayer
+    ) as ComputerPlayer[];
   }
 
   otherPlayers(playerToExclude: Player) {
@@ -23,6 +34,18 @@ export class Game {
   }
 
   updatePositions() {
+    for (const computerPlayer of this.computerPlayers) {
+      const playerToShoot = this.players.find(
+        (player) => player !== computerPlayer
+      )!;
+      computerPlayer.shoot({
+        x: playerToShoot.center.x,
+        y: playerToShoot.center.y,
+      });
+    }
+
+    this.players = this.players.filter((player) => !player.health.isEmpty);
+
     for (const player of this.players) {
       player.move();
 
@@ -70,6 +93,10 @@ export class Game {
         );
       });
     }
+
+    this.obstacles = this.obstacles.filter(
+      (obstacle) => !obstacle.health.isEmpty
+    );
   }
 
   draw() {
@@ -87,21 +114,20 @@ export class Game {
     }
   }
 
-  getWinner(): Player | undefined {
+  getWinnerOrNull(): Player | null {
     const remainingPlayers = this.players.filter(
       (player) => !player.health.isEmpty
     );
-    if (remainingPlayers.length === 1) {
-      return remainingPlayers[0];
-    }
+
+    return remainingPlayers.length === 1 ? remainingPlayers[0] : null;
   }
 
   play() {
     this.updatePositions();
     this.draw();
-    const potentialWinner = this.getWinner();
-    if (potentialWinner) {
-      return setTimeout(() => alert(potentialWinner + " has won!"), 10);
+    const winnerOrNull = this.getWinnerOrNull();
+    if (winnerOrNull) {
+      return setTimeout(() => alert(`${winnerOrNull.details.name} won!`), 10);
     }
 
     requestAnimationFrame(this.play.bind(this));
