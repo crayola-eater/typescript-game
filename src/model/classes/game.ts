@@ -66,15 +66,12 @@ export class Game {
       // Update
       for (const shot of player.shooter.shotsFired) {
         shot.move();
+      }
 
-        // Has shot left the world/view scope
-        if (shot.extendsBeyond(this.world)) {
-          // TODO: Isn't this problematic? Shouldn't remove elements from what
-          // we're iterating over.
-          player.shooter.remove(shot);
-          continue;
-        }
+      // Has shot left the world/view scope
+      player.shooter.removeShotsWhere((shot) => shot.extendsBeyond(this.world));
 
+      for (const shot of player.shooter.shotsFired) {
         // Does shot collide with any obstacles?
         const obstaclesShot = shot.getAllCollisionsWith(...this.obstacles);
         obstaclesShot.forEach((obstacle) =>

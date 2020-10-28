@@ -1,6 +1,8 @@
 import { IPosition } from "../interfaces/position";
 import { Shot } from "./shot";
 
+type filterPredicate = (shot: Shot, index: number, array: Shot[]) => boolean;
+
 export class Shooter {
   shotsFired: Shot[];
   constructor() {
@@ -13,6 +15,16 @@ export class Shooter {
   }
 
   remove(shotToRemove: Shot) {
-    this.shotsFired = this.shotsFired.filter((shot) => shotToRemove !== shot);
+    this.shotsFired = this.shotsFired.filter((shot) => shot !== shotToRemove);
+  }
+
+  removeShots(...shotsToRemove: Shot[]) {
+    this.shotsFired = this.shotsFired.filter(
+      (shot) => !shotsToRemove.includes(shot)
+    );
+  }
+
+  removeShotsWhere(predicate: filterPredicate) {
+    this.shotsFired = this.shotsFired.filter(predicate);
   }
 }
