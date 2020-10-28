@@ -1,10 +1,9 @@
 import { Controls } from "../components/controls";
 import { Health } from "../components/health";
-import { MovableShape } from "../components/movableShape";
+import { Player } from "../components/player";
 import { Shooter } from "../components/shooter";
-import { Player } from "../interfaces/player";
 
-export class HumanPlayer extends MovableShape implements Player {
+export class HumanPlayer extends Player {
   constructor(
     x: number,
     y: number,
@@ -16,13 +15,13 @@ export class HumanPlayer extends MovableShape implements Player {
     deltaX: number = 0,
     deltaY: number = 0
   ) {
-    super(x, y, width, height, deltaX, deltaY);
+    super(x, y, health, shooter, width, height, deltaX, deltaY);
     this.controls.onInputHandler = (input, newState, event) => {
       if ("LMB" === input && newState) {
-        this.shooter.shoot(
-          { x: this.center.x, y: this.center.y },
-          { x: (event as MouseEvent).x, y: (event as MouseEvent).y }
-        );
+        super.shoot({
+          x: (event as MouseEvent).x,
+          y: (event as MouseEvent).y,
+        });
       }
     };
     this.movementAmount = 5;

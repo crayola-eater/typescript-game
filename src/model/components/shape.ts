@@ -1,13 +1,6 @@
 import { IPosition } from "../interfaces/position";
 
-export interface ShapeOptions {
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-}
-
-export class Shape {
+export abstract class Shape {
   constructor(
     public x: number,
     public y: number,
@@ -40,6 +33,8 @@ export class Shape {
   getAllCollisionsWith<T extends Shape>(...otherShapes: T[]): T[] {
     return otherShapes.filter((otherShape) => this.collidesWith(otherShape));
   }
+
+  abstract draw(ctx: CanvasRenderingContext2D): void;
 
   get topLeft(): IPosition {
     return {

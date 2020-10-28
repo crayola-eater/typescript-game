@@ -3,7 +3,7 @@ import { defaultHumanPlayer } from "./model/classes/humanPlayer";
 import { Obstacle } from "./model/classes/obstacle";
 import { World } from "./model/classes/world";
 import { Health } from "./model/components/health";
-import { Player } from "./model/interfaces/player";
+import { Player } from "./model/components/player";
 
 const players: Player[] = [defaultHumanPlayer, defaultComputerPlayer];
 

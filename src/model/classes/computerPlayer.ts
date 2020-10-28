@@ -1,10 +1,9 @@
 import { Health } from "../components/health";
-import { MovableShape } from "../components/movableShape";
+import { Player } from "../components/player";
 import { Shooter } from "../components/shooter";
-import { Player } from "../interfaces/player";
 import { IPosition } from "../interfaces/position";
 
-export class ComputerPlayer extends MovableShape implements Player {
+export class ComputerPlayer extends Player {
   #lastActions: {
     changedDeltaX: number;
     changedDeltaY: number;
@@ -19,7 +18,7 @@ export class ComputerPlayer extends MovableShape implements Player {
     width: number = 100,
     height: number = 100
   ) {
-    super(x, y, width, height);
+    super(x, y, health, shooter, width, height);
 
     const currentTime = new Date().getTime();
     this.#lastActions = {
@@ -58,16 +57,7 @@ export class ComputerPlayer extends MovableShape implements Player {
 
   shoot(at: IPosition) {
     if (this.shouldShoot) {
-      this.shooter.shoot(
-        {
-          x: this.center.x,
-          y: this.center.y,
-        },
-        {
-          x: at.x,
-          y: at.y,
-        }
-      );
+      super.shoot(at);
     }
   }
 }

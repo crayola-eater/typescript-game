@@ -1,4 +1,4 @@
-import { Player } from "../interfaces/player";
+import { Player } from "../components/player";
 import { Obstacle } from "./obstacle";
 import { World } from "./world";
 
@@ -22,17 +22,7 @@ export class Game {
     return this.players.filter((player) => player !== playerToExclude);
   }
 
-  /**
-   * TODO: Put "draw"/"render" method on "Shape" class
-   * and have all subclasses (Shot, MovableShape, HumanPlayer,
-   * ComputerPlayer) override with their implementation
-   * (depending on how they want to be rendered on the canvas).
-   * Then the caller can just call "draw" method and the classes
-   * themselves can be responsible for how they're represented.
-   */
-  play() {
-    this.#ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
+  updatePositions() {
     for (const player of this.players) {
       player.move();
 
@@ -47,31 +37,17 @@ export class Game {
         player.moveBack();
       }
 
-      // Player sprite
-      this.#ctx.fillStyle = "red";
-      this.#ctx.fillRect(player.x, player.y, player.width, player.height);
-
-      // Player HP bar
-      this.#ctx.fillStyle = player.health.currentColour;
-      this.#ctx.fillRect(
-        player.x,
-        player.y - 40,
-        player.health.currentPercentage * player.width,
-        20
-      );
-      this.#ctx.strokeStyle = "black";
-      this.#ctx.lineWidth = 2;
-      this.#ctx.strokeRect(player.x, player.y - 40, player.width, 20);
-
-      // Update
       for (const shot of player.shooter.shotsFired) {
         shot.move();
       }
 
-      // Has shot left the world/view scope
-      player.shooter.removeShotsWhere((shot) => shot.extendsBeyond(this.world));
+      this.processCollisions();
+    }
+  }
 
-      for (const shot of player.shooter.shotsFired) {
+  processCollisions() {
+    for (const player of this.players) {
+      player.shooter.keepShotsWhere((shot) => {
         // Does shot collide with any obstacles?
         const obstaclesShot = shot.getAllCollisionsWith(...this.obstacles);
         obstaclesShot.forEach((obstacle) =>
@@ -82,47 +58,50 @@ export class Game {
         const playersShot = shot.getAllCollisionsWith(
           ...this.otherPlayers(player)
         );
-        for (const player of playersShot) {
-          player.health.changeHealthBy(-shot.damage);
-          if (player.health.isEmpty) {
-            this.#isRunning = false;
-            return alert(`${player} lost!`);
-          }
-        }
+        playersShot.forEach((player) =>
+          player.health.changeHealthBy(-shot.damage)
+        );
 
-        if (obstaclesShot.length > 0 || playersShot.length > 0) {
-          // TODO: Isn't this problematic? Shouldn't remove elements from what
-          // we're iterating over.
-          player.shooter.remove(shot);
-          continue;
-        }
+        return (
+          obstaclesShot.length === 0 &&
+          playersShot.length === 0 &&
+          // Has shot left the world/view scope?
+          !shot.extendsBeyond(this.world)
+        );
+      });
+    }
+  }
 
-        this.#ctx.fillStyle = "goldenrod";
-        this.#ctx.fillRect(shot.x, shot.y, 7, 7);
+  draw() {
+    this.#ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    for (const player of this.players) {
+      player.draw(this.#ctx);
+
+      for (const shot of player.shooter.shotsFired) {
+        shot.draw(this.#ctx);
       }
 
       for (const obstacle of this.obstacles) {
-        // Obstacle
-        this.#ctx.fillStyle = "#704300";
-        this.#ctx.fillRect(
-          obstacle.x,
-          obstacle.y,
-          obstacle.width,
-          obstacle.height
-        );
-
-        // Obstacle HP bar
-        this.#ctx.fillStyle = obstacle.health.currentColour;
-        this.#ctx.fillRect(
-          obstacle.x,
-          obstacle.y - 40,
-          obstacle.health.currentPercentage * obstacle.width,
-          20
-        );
-        this.#ctx.strokeStyle = "black";
-        this.#ctx.lineWidth = 2;
-        this.#ctx.strokeRect(obstacle.x, obstacle.y - 40, obstacle.width, 20);
+        obstacle.draw(this.#ctx);
       }
+    }
+  }
+
+  getWinner(): Player | undefined {
+    const remainingPlayers = this.players.filter(
+      (player) => !player.health.isEmpty
+    );
+    if (remainingPlayers.length === 1) {
+      return remainingPlayers[0];
+    }
+  }
+
+  play() {
+    this.updatePositions();
+    this.draw();
+    const potentialWinner = this.getWinner();
+    if (potentialWinner) {
+      return setTimeout(() => alert(potentialWinner + " has won!"), 10);
     }
 
     requestAnimationFrame(this.play.bind(this));

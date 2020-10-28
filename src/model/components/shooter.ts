@@ -24,7 +24,7 @@ export class Shooter {
     );
   }
 
-  removeShotsWhere(predicate: filterPredicate) {
+  keepShotsWhere(predicate: filterPredicate) {
     this.shotsFired = this.shotsFired.filter(predicate);
   }
 }

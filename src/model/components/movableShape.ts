@@ -1,6 +1,6 @@
 import { Shape } from "./shape";
 
-export class MovableShape extends Shape {
+export abstract class MovableShape extends Shape {
   constructor(
     x: number,
     y: number,

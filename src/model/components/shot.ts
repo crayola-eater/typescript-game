@@ -21,4 +21,9 @@ export class Shot extends MovableShape {
     this.deltaX = Math.cos(radians) * speed; // CAH
     this.deltaY = Math.sin(radians) * speed; // SOH
   }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    ctx.fillStyle = "goldenrod";
+    ctx.fillRect(this.x, this.y, 7, 7);
+  }
 }
