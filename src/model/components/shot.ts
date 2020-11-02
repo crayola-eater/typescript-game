@@ -1,10 +1,10 @@
 import { MovableShape } from "./movableShape";
-import { IPosition } from "../interfaces/position";
+import { PositionDetails } from "../interfaces/positionDetails";
 
 export class Shot extends MovableShape {
   constructor(
-    from: IPosition,
-    to: IPosition,
+    from: PositionDetails,
+    to: PositionDetails,
     width: number = 5,
     height: number = 5,
     public speed: number = 15,
@@ -22,7 +22,7 @@ export class Shot extends MovableShape {
     this.deltaY = Math.sin(radians) * speed; // SOH
   }
 
-  draw(ctx: CanvasRenderingContext2D) {
+  draw(ctx: CanvasRenderingContext2D): void {
     ctx.fillStyle = "goldenrod";
     ctx.fillRect(this.x, this.y, 7, 7);
   }

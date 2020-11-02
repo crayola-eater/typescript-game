@@ -29,7 +29,7 @@ export class HumanPlayer extends Player {
     this.movementAmount = 5;
   }
 
-  move() {
+  move(): void {
     if (this.controls.inputs.KeyW) {
       this.deltaY = -this.movementAmount;
     } else if (this.controls.inputs.KeyS) {

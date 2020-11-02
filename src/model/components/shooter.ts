@@ -1,4 +1,4 @@
-import { IPosition } from "../interfaces/position";
+import { PositionDetails } from "../interfaces/positionDetails";
 import { Shot } from "./shot";
 
 type filterPredicate = (shot: Shot, index: number, array: Shot[]) => boolean;
@@ -9,22 +9,22 @@ export class Shooter {
     this.shotsFired = [];
   }
 
-  shoot(from: IPosition, at: IPosition) {
+  shoot(from: PositionDetails, at: PositionDetails): void {
     const shot = new Shot(from, at);
     this.shotsFired.push(shot);
   }
 
-  remove(shotToRemove: Shot) {
+  remove(shotToRemove: Shot): void {
     this.shotsFired = this.shotsFired.filter((shot) => shot !== shotToRemove);
   }
 
-  removeShots(...shotsToRemove: Shot[]) {
+  removeShots(...shotsToRemove: Shot[]): void {
     this.shotsFired = this.shotsFired.filter(
       (shot) => !shotsToRemove.includes(shot)
     );
   }
 
-  keepShotsWhere(predicate: filterPredicate) {
+  keepShotsWhere(predicate: filterPredicate): void {
     this.shotsFired = this.shotsFired.filter(predicate);
   }
 }

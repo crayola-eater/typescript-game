@@ -5,5 +5,5 @@ export class World extends Shape {
     super(0, 0, width, height);
   }
 
-  draw() {}
+  draw(): void {}
 }

@@ -13,17 +13,17 @@ export abstract class MovableShape extends Shape {
     super(x, y, width, height);
   }
 
-  moveBy(deltaX: number, deltaY: number) {
+  moveBy(deltaX: number, deltaY: number): void {
     this.x += deltaX;
     this.y += deltaY;
   }
 
-  move() {
+  move(): void {
     this.x += this.deltaX;
     this.y += this.deltaY;
   }
 
-  moveBack() {
+  moveBack(): void {
     this.moveBy(-this.deltaX, -this.deltaY);
   }
 }

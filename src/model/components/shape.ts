@@ -1,4 +1,4 @@
-import { IPosition } from "../interfaces/position";
+import { PositionDetails } from "../interfaces/positionDetails";
 
 export abstract class Shape {
   constructor(
@@ -36,35 +36,35 @@ export abstract class Shape {
 
   abstract draw(ctx: CanvasRenderingContext2D): void;
 
-  get topLeft(): IPosition {
+  get topLeft(): PositionDetails {
     return {
       x: this.x,
       y: this.y,
     };
   }
 
-  get topRight(): IPosition {
+  get topRight(): PositionDetails {
     return {
       x: this.x + this.width,
       y: this.y,
     };
   }
 
-  get bottomLeft(): IPosition {
+  get bottomLeft(): PositionDetails {
     return {
       x: this.x,
       y: this.y + this.height,
     };
   }
 
-  get bottomRight(): IPosition {
+  get bottomRight(): PositionDetails {
     return {
       x: this.x + this.width,
       y: this.y + this.height,
     };
   }
 
-  get center(): IPosition {
+  get center(): PositionDetails {
     return {
       x: this.x + this.width / 2,
       y: this.y + this.height / 2,

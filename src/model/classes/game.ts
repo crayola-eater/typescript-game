@@ -23,11 +23,11 @@ export class Game {
     ) as ComputerPlayer[];
   }
 
-  otherPlayers(playerToExclude: Player) {
+  otherPlayers(playerToExclude: Player): Player[] {
     return this.players.filter((player) => player !== playerToExclude);
   }
 
-  updatePositions() {
+  updatePositions(): void {
     for (const computerPlayer of this.computerPlayers) {
       const playerToShoot = this.players.find(
         (player) => player !== computerPlayer
@@ -62,7 +62,7 @@ export class Game {
     }
   }
 
-  processCollisions() {
+  processCollisions(): void {
     for (const player of this.players) {
       player.shooter.keepShotsWhere((shot) => {
         // Does shot collide with any obstacles?
@@ -93,7 +93,7 @@ export class Game {
     );
   }
 
-  draw() {
+  draw(): void {
     this.#ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     for (const player of this.players) {
       player.draw(this.#ctx);
@@ -116,12 +116,13 @@ export class Game {
     return remainingPlayers.length === 1 ? remainingPlayers[0] : null;
   }
 
-  play() {
+  play(): void {
     this.updatePositions();
     this.draw();
     const winnerOrNull = this.getWinnerOrNull();
     if (winnerOrNull) {
-      return setTimeout(() => alert(`${winnerOrNull.details.name} won!`), 10);
+      setTimeout(() => alert(`${winnerOrNull.details.name} won!`), 10);
+      return;
     }
 
     requestAnimationFrame(this.play.bind(this));

@@ -2,7 +2,7 @@ import { Health } from "../components/health";
 import { Player } from "../components/player";
 import { Shooter } from "../components/shooter";
 import { PlayerDetails } from "../interfaces/playerDetails";
-import { IPosition } from "../interfaces/position";
+import { PositionDetails } from "../interfaces/positionDetails";
 
 export class ComputerPlayer extends Player {
   #lastActions: {
@@ -30,15 +30,15 @@ export class ComputerPlayer extends Player {
     };
   }
 
-  get shouldChangeDirection() {
+  get shouldChangeDirection(): boolean {
     return new Date().getTime() > this.#lastActions.changedDeltaX + 100;
   }
 
-  get shouldShoot() {
+  get shouldShoot(): boolean {
     return new Date().getTime() > this.#lastActions.shot + 500;
   }
 
-  maybeChangeDirection() {
+  maybeChangeDirection(): void {
     if (this.shouldChangeDirection) {
       const leftOrRight = Math.random() < 0.5 ? -1 : 1;
       this.deltaX = Math.random() * 5 * leftOrRight;
@@ -52,12 +52,12 @@ export class ComputerPlayer extends Player {
     }
   }
 
-  move() {
+  move(): void {
     this.maybeChangeDirection();
     super.move();
   }
 
-  shoot(at: IPosition) {
+  shoot(at: PositionDetails): void {
     if (this.shouldShoot) {
       this.#lastActions.shot = new Date().getTime();
       super.shoot(at);

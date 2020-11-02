@@ -12,7 +12,7 @@ export class Obstacle extends Shape {
     super(x, y, width, height);
   }
 
-  draw(ctx: CanvasRenderingContext2D) {
+  draw(ctx: CanvasRenderingContext2D): void {
     // Obstacle
     ctx.fillStyle = "#704300";
     ctx.fillRect(this.x, this.y, this.width, this.height);

@@ -1,5 +1,5 @@
 import { PlayerDetails } from "../interfaces/playerDetails";
-import { IPosition } from "../interfaces/position";
+import { PositionDetails } from "../interfaces/positionDetails";
 import { Health } from "./health";
 import { MovableShape } from "./movableShape";
 import { Shooter } from "./shooter";
@@ -19,7 +19,7 @@ export class Player extends MovableShape {
     super(x, y, width, height, deltaX, deltaY);
   }
 
-  shoot(at: IPosition) {
+  shoot(at: PositionDetails): void {
     this.shooter.shoot(
       {
         x: this.center.x,
@@ -32,7 +32,7 @@ export class Player extends MovableShape {
     );
   }
 
-  draw(ctx: CanvasRenderingContext2D) {
+  draw(ctx: CanvasRenderingContext2D): void {
     // Player sprite
     ctx.fillStyle = this.details.colour;
     ctx.fillRect(this.x, this.y, this.width, this.height);

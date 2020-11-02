@@ -6,7 +6,7 @@ export class Health {
     private currentHealth: number = maxHealth
   ) {}
 
-  changeHealthBy(change: number) {
+  changeHealthBy(change: number): void {
     this.currentHealth = Math.max(0, this.currentHealth + change);
   }
 
