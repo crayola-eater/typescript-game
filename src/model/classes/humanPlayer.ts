@@ -21,8 +21,8 @@ export class HumanPlayer extends Player {
     this.controls.onInputHandler = (input, newState, event) => {
       if ("LMB" === input && newState) {
         super.shoot({
-          x: (event as MouseEvent).x,
-          y: (event as MouseEvent).y,
+          x: (event as MouseEvent).offsetX,
+          y: (event as MouseEvent).offsetY,
         });
       }
     };
