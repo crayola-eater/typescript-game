@@ -1,4 +1,4 @@
-# A basic shooting game where you play against other players.
+# A basic shooting game where you play against other AI players.
 
 This was an exercise in:
 
