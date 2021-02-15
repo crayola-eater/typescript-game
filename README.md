@@ -18,7 +18,7 @@
 
 # Tools used
 - Core application
-  - TypeScript (vanilla)
+  - TypeScript
   - Canvas API
   - `requestAnimationFrame` browser API
   - HTML, CSS (vanilla)
