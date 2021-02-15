@@ -11,7 +11,7 @@
 - Clone this repo
 - `cd` into `typescript-game` directory and then `npm i`
 - `npm run wp` to build the game locally
-- Use something like [erver](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) to serve the built `index.html` (and other files) locally (see: `./dist/` folder).
+- Use something like [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) to serve the built `index.html` (and other files) locally (see: `./dist/` folder).
 
 # Other commands
 - `npm run wpw` to start "watch" mode, which can then trigger builds automatically when files are changed and saved.
