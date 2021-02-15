@@ -3,6 +3,8 @@
 - Your objective is to survive by shooting other players and become the last player standing.
 
 ![Game recording](meta/game-recording.gif)
+
+(The brown boxes are destructible obstacles which be used as temporary shields. You, the human player, start off in the lower left hand corner. The other moving boxes represent AI players.)
   
 # How to run
 - Install Node.js (if not already installed)
