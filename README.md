@@ -4,14 +4,14 @@
 
 ![Game recording](meta/game-recording.gif)
 
-(The brown boxes are destructible obstacles which be used as temporary shields. You, the human player, start off in the lower left hand corner. The other moving boxes represent AI players.)
+(The brown boxes are destructible obstacles which can be used as temporary shields. You, the human player, start off in the lower left hand corner. The other moving boxes represent AI players.)
   
 # How to run
 - Install Node.js (if not already installed)
 - Clone this repo
 - `cd` into `typescript-game` directory and then `npm i`
 - `npm run wp` to build the game locally
-- Use something like [Liveserver](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) to serve the built `index.html` (and other files) locally (see: `./dist/` folder).
+- Use something like [erver](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) to serve the built `index.html` (and other files) locally (see: `./dist/` folder).
 
 # Other commands
 - `npm run wpw` to start "watch" mode, which can then trigger builds automatically when files are changed and saved.
